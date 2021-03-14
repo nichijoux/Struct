@@ -1,6 +1,7 @@
 ﻿#pragma once
 #ifndef _TREE_H
 #define _TREE_H
+using std::max;
 
 //大于的仿函数
 template <class T>
@@ -16,15 +17,18 @@ struct Less
 	bool operator()(const T& a, const T& b) { return a < b; }
 };
 
-template<class E>
+template<class T>
 struct TreeNode
 {
-	E val;
+	T val;					//通用val
+	int height;				//AVL树使用
+	int color;				//红黑树使用
 	TreeNode* left;
 	TreeNode* right;
-	TreeNode() : val(0), left(nullptr), right(nullptr) {}
-	TreeNode(E x) : val(x), left(nullptr), right(nullptr) {}
-	TreeNode(E x, TreeNode* left, TreeNode* right) : val(x), left(left), right(right) {}
+
+	TreeNode() = default;
+	TreeNode(T x) : val(x), height(0), color(0), left(nullptr), right(nullptr) {}
+	TreeNode(T x, TreeNode* left, TreeNode* right) : val(x), height(0), color(0), left(left), right(right) {}
 };
 
 //默认模板;compare为比较器,默认为小于的仿函数
@@ -32,8 +36,8 @@ template<class T, class compare = Less<T>>
 class Tree
 {
 protected:
-	TreeNode<T>* root;
-	int NodeSize;			//Tree中的节点数量
+	TreeNode<T>* root;				//根节点
+	int NodeSize;					//Tree中的节点数量
 	//前序遍历的辅助函数(TreeNode* 可更改node的值)
 	void preOrderHelp(TreeNode<T>* root, void(*function)(TreeNode<T>* node));
 	//中序遍历的辅助函数(TreeNode* 可更改node的值)
@@ -41,21 +45,21 @@ protected:
 	//后序遍历的辅助函数(TreeNode* 可更改node的值)
 	void backOrderHelp(TreeNode<T>* root, void(*function)(TreeNode<T>* node));
 	//得到树的高度的辅助函数
-	int get_Height_Help(TreeNode<T>* root);
+	int get_Height_Help(TreeNode<T>* root)const;
 public:
 	//构造函数
 	Tree() { root = nullptr; NodeSize = 0; }
-
+	virtual ~Tree() = default;
 	//前序遍历
 	void PreOrder(void(*function)(TreeNode<T>* node)) { preOrderHelp(root, function); };
 	//中序遍历
 	void InOrder(void(*function)(TreeNode<T>* node)) { inOrderHelp(root, function); }
-	//后续遍历
+	//后序遍历
 	void BackOrder(void(*function)(TreeNode<T>* node)) { backOrderHelp(root, function); }
 	//得到树的高度
 	int Get_Tree_Height() { return get_Height_Help(root); }
 	//得到节点数
-	int GetNodeSize() { return NodeSize; }
+	int GetNodeSize()const { return NodeSize; }
 };
 
 #endif // Tree.h
@@ -95,10 +99,8 @@ void Tree<T, compare>::backOrderHelp(TreeNode<T>* root, void(*function)(TreeNode
 
 //得到树的高度的辅助函数
 template<class T, class compare>
-int Tree<T, compare>::get_Height_Help(TreeNode<T>* root)
+int Tree<T, compare>::get_Height_Help(TreeNode<T>* root)const
 {
 	if (root == nullptr) { return 0; }
-	int TreeLHeight = get_Height_Help(root->left);
-	int TreeRHeight = get_Height_Help(root->right);
-	return TreeLHeight >= TreeRHeight ? TreeLHeight + 1 : TreeRHeight + 1;
+	return max(get_Height_Help(root->left), get_Height_Help(root->right)) + 1;
 }
