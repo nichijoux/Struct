@@ -51,15 +51,15 @@ public:
 	Tree() { root = nullptr; NodeSize = 0; }
 	virtual ~Tree() = default;
 	//前序遍历
-	void PreOrder(void(*function)(TreeNode<T>* node)) { preOrderHelp(root, function); };
+	void preOrder(void(*function)(TreeNode<T>* node)) { preOrderHelp(root, function); };
 	//中序遍历
-	void InOrder(void(*function)(TreeNode<T>* node)) { inOrderHelp(root, function); }
+	void inOrder(void(*function)(TreeNode<T>* node)) { inOrderHelp(root, function); }
 	//后序遍历
-	void BackOrder(void(*function)(TreeNode<T>* node)) { backOrderHelp(root, function); }
+	void backOrder(void(*function)(TreeNode<T>* node)) { backOrderHelp(root, function); }
 	//得到树的高度
-	int Get_Tree_Height() { return get_Height_Help(root); }
+	int getHeight() { return get_Height_Help(root); }
 	//得到节点数
-	int GetNodeSize()const { return NodeSize; }
+	int getNodeSize()const { return NodeSize; }
 };
 
 #endif // Tree.h
