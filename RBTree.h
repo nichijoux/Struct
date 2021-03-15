@@ -3,7 +3,7 @@
 #define RBTREE_H
 
 //红黑树
-template<class T, class compare>
+template<class T>
 class RBT
 {
 private:

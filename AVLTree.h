@@ -5,8 +5,8 @@
 
 //AVL树,AVL树是带平衡条件的BST
 //AVL树是每个节点的左子树和右子树的高度最多差1的二叉查找树
-template<class T, class compare = Less<T>>
-class AVL :virtual public BST<T, compare>
+template<class T>
+class AVL :virtual public BST<T>
 {
 private:
 	//得到某一节点的高度
@@ -28,8 +28,8 @@ private:
 	TreeNode<T>* DoubleRotateWithRight(TreeNode<T>* preRoot);
 
 	//声明使用间接基类的root,否则无法访问
-	using Tree<T, compare>::root;
-	using Tree<T, compare>::NodeSize;
+	using Tree<T>::root;
+	using Tree<T>::NodeSize;
 public:
 	//构造函数
 	AVL() {}
@@ -44,16 +44,16 @@ public:
 #endif // !AVLTREE_H
 
 //得到某节点的高度
-template<class T, class compare>
-inline int AVL<T, compare>::GetNodeHeight(TreeNode<T>* node)
+template<class T>
+inline int AVL<T>::GetNodeHeight(TreeNode<T>* node)
 {
 	return node == nullptr ? 0 : node->height;
 }
 
 //旋转吧！雪月花
 //单左旋,插入时有RR插入,即向右子树的右孩子插入节点,导致不符合AVL树的定义
-template<class T, class compare>
-TreeNode<T>* AVL<T, compare>::SingleRotateWithLeft(TreeNode<T>* preRoot)
+template<class T>
+TreeNode<T>* AVL<T>::SingleRotateWithLeft(TreeNode<T>* preRoot)
 {
 	//RR插入使得preRoot变为第一个不满足AVL树定义的节点
 	TreeNode<T>* newRoot = preRoot->right;		//将newRoot节点作为新的root节点
@@ -67,8 +67,8 @@ TreeNode<T>* AVL<T, compare>::SingleRotateWithLeft(TreeNode<T>* preRoot)
 }
 
 //单右旋,插入时有LL插入,即向左子树的左孩子插入节点,导致不符合AVL树的定义
-template<class T, class compare>
-TreeNode<T>* AVL<T, compare>::SingleRotateWithRight(TreeNode<T>* preRoot)
+template<class T>
+TreeNode<T>* AVL<T>::SingleRotateWithRight(TreeNode<T>* preRoot)
 {
 	//LL插入使得preRoot变为第一个不满足AVL树定义的节点
 	TreeNode<T>* newRoot = preRoot->left;		//将newRoot节点作为新的root节点
@@ -82,8 +82,8 @@ TreeNode<T>* AVL<T, compare>::SingleRotateWithRight(TreeNode<T>* preRoot)
 }
 
 //双左旋(R-L双旋转,RL插入(和单旋转不同))
-template<class T, class compare>
-TreeNode<T>* AVL<T, compare>::DoubleRotateWithLeft(TreeNode<T>* preRoot)
+template<class T>
+TreeNode<T>* AVL<T>::DoubleRotateWithLeft(TreeNode<T>* preRoot)
 {
 	//先对preRoot->right进行右旋,转换为RR情况.再对preRoot进行左旋操作
 	preRoot->right = SingleRotateWithRight(preRoot->right);
@@ -92,8 +92,8 @@ TreeNode<T>* AVL<T, compare>::DoubleRotateWithLeft(TreeNode<T>* preRoot)
 }
 
 //双右旋(L-R双旋转,LR插入(和单旋转不同))
-template<class T, class compare>
-TreeNode<T>* AVL<T, compare>::DoubleRotateWithRight(TreeNode<T>* preRoot)
+template<class T>
+TreeNode<T>* AVL<T>::DoubleRotateWithRight(TreeNode<T>* preRoot)
 {
 	//先对preRoot->left进行左旋,转换为LL情况.再对preRoot进行右旋操作
 	preRoot->left = SingleRotateWithLeft(preRoot->left);
@@ -102,8 +102,8 @@ TreeNode<T>* AVL<T, compare>::DoubleRotateWithRight(TreeNode<T>* preRoot)
 }
 
 //插入节点的辅助函数
-template<class T, class compare>
-TreeNode<T>* AVL<T, compare>::InsertNode(TreeNode<T>* node, const T& val)
+template<class T>
+TreeNode<T>* AVL<T>::InsertNode(TreeNode<T>* node, const T& val)
 {
 	if (node == nullptr)
 	{
@@ -157,8 +157,8 @@ TreeNode<T>* AVL<T, compare>::InsertNode(TreeNode<T>* node, const T& val)
 }
 
 //删除节点的辅助函数
-template<class T, class compare>
-TreeNode<T>* AVL<T, compare>::DeleteNode(TreeNode<T>* node, const T& val)
+template<class T>
+TreeNode<T>* AVL<T>::DeleteNode(TreeNode<T>* node, const T& val)
 {
 	//旋转操作会自行维护节点的高度
 	if (node == nullptr) { return node; }
@@ -233,7 +233,7 @@ TreeNode<T>* AVL<T, compare>::DeleteNode(TreeNode<T>* node, const T& val)
 			if (GetNodeHeight(node->left) > GetNodeHeight(node->right))
 			{
 				//找到前驱节点
-				TreeNode<T>* preNode = BST<T, compare>::FindMaxNode(node->left);
+				TreeNode<T>* preNode = BST<T>::FindMaxNode(node->left);
 				//找到前驱节点之后,交换preNode和node的值
 				node->val = preNode->val;
 				//接下来继续递归,从node的左子树出发,删除tempNode->val值的节点
@@ -243,7 +243,7 @@ TreeNode<T>* AVL<T, compare>::DeleteNode(TreeNode<T>* node, const T& val)
 			else
 			{
 				//找到next的后继节点
-				TreeNode<T>* nextNode = BST<T, compare>::FindMinNode(node->right);
+				TreeNode<T>* nextNode = BST<T>::FindMinNode(node->right);
 				//交换node和nextNode的值
 				node->val = nextNode->val;
 				node->right = DeleteNode(node->right, nextNode->val);
@@ -254,15 +254,15 @@ TreeNode<T>* AVL<T, compare>::DeleteNode(TreeNode<T>* node, const T& val)
 }
 
 //插入节点的函数
-template<class T, class compare>
-void AVL<T, compare>::Insert(const T& val)
+template<class T>
+void AVL<T>::Insert(const T& val)
 {
 	this->root = InsertNode(this->root, val);
 }
 
 //删除节点的函数
-template<class T, class compare>
-void AVL<T, compare>::Delete(const T& val)
+template<class T>
+void AVL<T>::Delete(const T& val)
 {
 	this->root = DeleteNode(this->root, val);
 }

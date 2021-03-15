@@ -3,8 +3,8 @@
 #define _BSTTREE_H
 #include "Tree.h"
 
-template<class T, class compare = Less<T>>
-class BST :virtual public Tree<T, compare>
+template<class T>
+class BST :virtual public Tree<T>
 {
 protected:
 	//将树清空
@@ -44,8 +44,8 @@ public:
 //所以还是直接全都写在一起算了,定义在前,实现在后
 
 //将树清空,inline 内联函数
-template<class T, class compare>
-inline void BST<T, compare>::ClearTree(TreeNode<T>* node)
+template<class T>
+inline void BST<T>::ClearTree(TreeNode<T>* node)
 {
 	if (node != nullptr)
 	{
@@ -56,8 +56,8 @@ inline void BST<T, compare>::ClearTree(TreeNode<T>* node)
 }
 
 //插入节点的辅助函数(递归实现)
-template <class T, class compare>
-TreeNode<T>* BST<T, compare>::InsertNode(TreeNode<T>* node, const T& val)
+template <class T>
+TreeNode<T>* BST<T>::InsertNode(TreeNode<T>* node, const T& val)
 {
 	if (node == nullptr)
 	{
@@ -79,8 +79,8 @@ TreeNode<T>* BST<T, compare>::InsertNode(TreeNode<T>* node, const T& val)
 }
 
 //删除节点的辅助函数(递归实现)
-template<class T, class compare>
-TreeNode<T>* BST<T, compare>::DeleteNode(TreeNode<T>* node, const T& key)
+template<class T>
+TreeNode<T>* BST<T>::DeleteNode(TreeNode<T>* node, const T& key)
 {
 	//递归终止条件
 	if (node == nullptr) { return node; }
@@ -152,8 +152,8 @@ TreeNode<T>* BST<T, compare>::DeleteNode(TreeNode<T>* node, const T& key)
 }
 
 //返回BST中最小值的节点
-template<class T, class compare>
-TreeNode<T>* BST<T, compare>::FindMinNode(TreeNode<T>* node)const
+template<class T>
+TreeNode<T>* BST<T>::FindMinNode(TreeNode<T>* node)const
 {
 	TreeNode<T>* tempNode = node;
 	if (tempNode != nullptr)
@@ -167,8 +167,8 @@ TreeNode<T>* BST<T, compare>::FindMinNode(TreeNode<T>* node)const
 }
 
 //返回BST中最大值的节点
-template<class T, class compare>
-TreeNode<T>* BST<T, compare>::FindMaxNode(TreeNode<T>* node)const
+template<class T>
+TreeNode<T>* BST<T>::FindMaxNode(TreeNode<T>* node)const
 {
 	TreeNode<T>* tempNode = node;
 	if (tempNode != nullptr)
@@ -182,8 +182,8 @@ TreeNode<T>* BST<T, compare>::FindMaxNode(TreeNode<T>* node)const
 }
 
 //插入函数的实现
-template<class T, class compare>
-void BST<T, compare>::Insert(const T& val)
+template<class T>
+void BST<T>::Insert(const T& val)
 {
 	//迭代实现
 	if (this->root == nullptr)
@@ -227,8 +227,8 @@ void BST<T, compare>::Insert(const T& val)
 }
 
 //删除值为val的节点
-template<class T, class compare>
-void BST<T, compare>::Delete(const T& val)
+template<class T>
+void BST<T>::Delete(const T& val)
 {
 	if (this->NodeSize <= 0) { return; }
 	//删除一个值为val的节点
@@ -236,8 +236,8 @@ void BST<T, compare>::Delete(const T& val)
 }
 
 //判断BST中是否存在val
-template<class T, class compare>
-bool BST<T, compare>::Search(const T& val)
+template<class T>
+bool BST<T>::Search(const T& val)
 {
 	TreeNode<T>* tempNode = this->root;
 	while (tempNode != nullptr)
@@ -262,8 +262,8 @@ bool BST<T, compare>::Search(const T& val)
 }
 
 //得到BST中指定值的节点
-template<class T, class compare>
-TreeNode<T>* BST<T, compare>::GetNode(const T& val)
+template<class T>
+TreeNode<T>* BST<T>::GetNode(const T& val)
 {
 	TreeNode<T>* tempNode = this->root;
 	while (tempNode != nullptr && tempNode->val != val)
@@ -282,15 +282,15 @@ TreeNode<T>* BST<T, compare>::GetNode(const T& val)
 }
 
 //返回BST中最小值的节点
-template<class T, class compare>
-TreeNode<T>* BST<T, compare>::GetMinNode()
+template<class T>
+TreeNode<T>* BST<T>::GetMinNode()
 {
 	return FindMinNode(this->root);
 }
 
 //返回BST中最大值的节点
-template<class T, class compare>
-TreeNode<T>* BST<T, compare>::GetMaxNode()
+template<class T>
+TreeNode<T>* BST<T>::GetMaxNode()
 {
 	return FindMaxNode(this->root);
 }

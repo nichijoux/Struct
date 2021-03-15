@@ -3,20 +3,6 @@
 #define _TREE_H
 using std::max;
 
-//大于的仿函数
-template <class T>
-struct Greater
-{
-	bool operator()(const T& a, const T& b) { return a > b; }
-};
-
-//小于的仿函数
-template <class T>
-struct Less
-{
-	bool operator()(const T& a, const T& b) { return a < b; }
-};
-
 template<class T>
 struct TreeNode
 {
@@ -31,8 +17,7 @@ struct TreeNode
 	TreeNode(T x, TreeNode* left, TreeNode* right) : val(x), height(0), color(0), left(left), right(right) {}
 };
 
-//默认模板;compare为比较器,默认为小于的仿函数
-template<class T, class compare = Less<T>>
+template<class T>
 class Tree
 {
 protected:
@@ -68,8 +53,8 @@ public:
 //函数实现
 
 //前序遍历的辅助函数
-template<class T, class compare>
-void Tree<T, compare>::preOrderHelp(TreeNode<T>* root, void(*function)(TreeNode<T>* node))
+template<class T>
+void Tree<T>::preOrderHelp(TreeNode<T>* root, void(*function)(TreeNode<T>* node))
 {
 	if (root == nullptr) { return; }
 	function(root);
@@ -78,8 +63,8 @@ void Tree<T, compare>::preOrderHelp(TreeNode<T>* root, void(*function)(TreeNode<
 }
 
 //中序遍历的辅助函数
-template<class T, class compare>
-void Tree<T, compare>::inOrderHelp(TreeNode<T>* root, void(*function)(TreeNode<T>* node))
+template<class T>
+void Tree<T>::inOrderHelp(TreeNode<T>* root, void(*function)(TreeNode<T>* node))
 {
 	if (root == nullptr) { return; }
 	inOrderHelp(root->left, function);
@@ -88,8 +73,8 @@ void Tree<T, compare>::inOrderHelp(TreeNode<T>* root, void(*function)(TreeNode<T
 }
 
 //后序遍历的辅助函数
-template<class T, class compare>
-void Tree<T, compare>::backOrderHelp(TreeNode<T>* root, void(*function)(TreeNode<T>* node))
+template<class T>
+void Tree<T>::backOrderHelp(TreeNode<T>* root, void(*function)(TreeNode<T>* node))
 {
 	if (root == nullptr) { return; }
 	backOrderHelp(root->left, function);
@@ -98,8 +83,8 @@ void Tree<T, compare>::backOrderHelp(TreeNode<T>* root, void(*function)(TreeNode
 }
 
 //得到树的高度的辅助函数
-template<class T, class compare>
-int Tree<T, compare>::get_Height_Help(TreeNode<T>* root)const
+template<class T>
+int Tree<T>::get_Height_Help(TreeNode<T>* root)const
 {
 	if (root == nullptr) { return 0; }
 	return max(get_Height_Help(root->left), get_Height_Help(root->right)) + 1;
