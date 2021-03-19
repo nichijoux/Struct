@@ -312,18 +312,16 @@ void RBT<T>::DeleteNode(TreeNode<T>* node)
 	{
 		//如果要删除的node节点为叶子节点(如果是红色节点,直接删除即可,但黑色节点需要旋转调整)
 		if (node->color == BLACK)
-		{
 			DeleteFixUp(node);//以node节点为支点调整红黑树平衡
-			//调整后的node节点的父节点不为nullptr
-			if (node->parent != nullptr)
-			{
-				//指针清空(避免野指针)
-				if (node == node->parent->left)
-					node->parent->left = nullptr;
-				else if (node == node->parent->right)
-					node->parent->right = nullptr;
-				node->parent = nullptr;
-			}
+		//调整后的node节点的父节点不为nullptr(或者一开始node->color = RED,一定要避免野指针)
+		if (node->parent != nullptr)
+		{
+			//指针清空(避免野指针)
+			if (node == node->parent->left)
+				node->parent->left = nullptr;
+			else if (node == node->parent->right)
+				node->parent->right = nullptr;
+			node->parent = nullptr;
 		}
 	}
 	//回收node节点
