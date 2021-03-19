@@ -280,43 +280,44 @@ void RBT<T>::DeleteNode(TreeNode<T>* node)
 		//node有双子树
 		//找到后继节点
 		TreeNode<T>* nextNode = this->FindMinNode(node->right);
-		node->val = nextNode->val;
-		//删除node
-		node = nextNode;//替换节点,然后准备平衡
+		node->val = nextNode->val;		//将node节点的值改为其后继节点的值,则后续只需删除后继节点
+		node = nextNode;				//node指针现在指向原node节点的后继节点,然后准备平衡
 	}
 
+	//观察node节点是否有左右子树(此时的node节点的孩子一定不为双子树),node节点也可能是叶子节点
 	TreeNode<T>* replacement = node->left != nullptr ? node->left : node->right;
+
 	if (replacement != nullptr)
 	{
 		// Link replacement to parent
 		replacement->parent = node->parent;
+		//node->parent要找到replacement做其儿子(将replacement代替掉node)
 		if (node->parent == nullptr)
 			this->root = replacement;
 		else if (node == node->parent->left)
-			node->parent->left = replacement;
+			node->parent->left = replacement;		//node节点原来是其父节点的左儿子
 		else
-			node->parent->right = replacement;
+			node->parent->right = replacement;		//node节点原来是其父节点的右儿子
 
-		// Null out links so they are OK to use by DeleteFixUp.
-		node->left = node->right = node->parent = nullptr;
-		// Fix replacement
+		// 如果删除的是个黑色节点,则需要调整平衡,否则直接删除即可
+		if (node->color == BLACK)
+			DeleteFixUp(replacement);
+	}
+	else if (node->parent == nullptr)
+	{
+		//如果要删除的节点node为叶子节点,则删除掉node节点后一定为root空
+		this->root = nullptr;
+	}
+	else
+	{
+		//如果要删除的node节点为叶子节点(如果是红色节点,直接删除即可,但黑色节点需要旋转调整)
 		if (node->color == BLACK)
 		{
-			DeleteFixUp(replacement);
-		}
-		else if (node->parent == nullptr)
-		{
-			// return if we are the only node.
-			this->root = nullptr;
-		}
-		else
-		{
-			//  No children. Use self as phantom replacement and unlink.
-			if (node->color == BLACK)
-				DeleteFixUp(node);
-
+			DeleteFixUp(node);//以node节点为支点调整红黑树平衡
+			//调整后的node节点的父节点不为nullptr
 			if (node->parent != nullptr)
 			{
+				//指针清空(避免野指针)
 				if (node == node->parent->left)
 					node->parent->left = nullptr;
 				else if (node == node->parent->right)
@@ -325,6 +326,8 @@ void RBT<T>::DeleteNode(TreeNode<T>* node)
 			}
 		}
 	}
+	//回收node节点
+	delete node;
 }
 
 //插入节点的函数
