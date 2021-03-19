@@ -1,44 +1,43 @@
 ﻿#include <iostream>
 #include <algorithm>
-#include "BSTree.h"
 #include "AVLTree.h"
+#include "RBTree.h"
 #include "../../BigInteger(大数类)/BigInteger(大数类)/BigInteger.h"
 using namespace std;
 
 int main()
 {
-	//AVL<BigInteger> t;
-	//for (int i = 0; i < 10; i++)
-	//{
-	//	BigInteger num;
-	//	cin >> num;
-	//	t.Insert(num);
-	//	cout << t.getHeight() << endl;
-	//}
-	//cout << "中序遍历是:  ";
-	//t.inOrder([](TreeNode<BigInteger>* node) {
-	//	cout << node->val << endl;
-	//	});
-
-	vector<int> nums = { 16,6,64,4,7,23,87,5,44,71,92,99 };
-	//AVL<int> tree;
-	Tree<int>* tree = new AVL<int>();
+	RBT<int> tree;
+	vector<int> nums = { 10,7,7,15,5,6,11,13,22,22,13 };
 	for (int num : nums)
 	{
-		tree->Insert(num);
+		tree.Insert(num);
 	}
-	cout << tree->getHeight() << endl;
-	tree->Delete(64);
-	cout << tree->getHeight() << endl;
-	cout << "前序遍历是:  ";
-	tree->preOrder([](TreeNode<int>* node) {
+	tree.Delete(11);
+	printf("%d\n", tree.getHeight());
+	tree.inOrder([](TreeNode<int>* node) {
 		cout << node->val << " ";
 		});
-	cout << endl;
-	cout << "中序遍历是:  ";
-	tree->inOrder([](TreeNode<int>* node) {
-		cout << node->val << " ";
-		});
+
+	//vector<int> nums = { 16,6,64,4,7,23,87,5,44,71,92,99 };
+	//AVL<int> tree;
+	//for (int num : nums)
+	//{
+	//	tree.Insert(num);
+	//}
+	//cout << tree.getHeight() << endl;
+	//tree.Delete(64);
+	//cout << tree.getHeight() << endl;
+	//cout << "前序遍历是:  ";
+	//tree.preOrder([](TreeNode<int>* node) {
+	//	cout << node->val << " ";
+	//	});
+	//cout << endl;
+	//cout << "中序遍历是:  ";
+	//tree.inOrder([](TreeNode<int>* node) {
+	//	cout << node->val << " ";
+	//	});
+
 
 	//int arr[] = { 21,6 ,3 ,52, 36, 59 ,66 ,61 ,63 ,88 ,80 };
 	//BST<int> bst;

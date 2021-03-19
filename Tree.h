@@ -2,6 +2,7 @@
 #ifndef _TREE_H
 #define _TREE_H
 using std::max;
+using std::swap;
 
 template<class T>
 struct TreeNode
@@ -9,12 +10,12 @@ struct TreeNode
 	T val;					//通用val
 	int height;				//AVL树使用
 	int color;				//红黑树使用
+	TreeNode<T>* parent;	//红黑树使用
 	TreeNode<T>* left;
 	TreeNode<T>* right;
-
 	TreeNode() = default;
-	TreeNode(T x) : val(x), height(0), color(0), left(nullptr), right(nullptr) {}
-	TreeNode(T x, TreeNode<T>* left, TreeNode<T>* right) : val(x), height(0), color(0), left(left), right(right) {}
+	TreeNode(T x) : val(x), height(0), color(0), left(nullptr), right(nullptr), parent(nullptr) {}
+	TreeNode(T x, TreeNode<T>* left, TreeNode<T>* right) : val(x), height(0), color(0), left(left), right(right), parent(nullptr) {}
 };
 
 template<class T>
@@ -34,7 +35,7 @@ protected:
 public:
 	//构造函数
 	Tree() { root = nullptr; NodeSize = 0; }
-	virtual ~Tree() = 0;
+	virtual ~Tree() = default;
 
 	//插入函数接口
 	virtual void Insert(const T& val) = 0;

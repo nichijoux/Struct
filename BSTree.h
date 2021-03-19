@@ -28,7 +28,7 @@ public:
 	//删除节点的函数
 	virtual void Delete(const T& val);
 	//判断BST中是否存在val
-	bool Search(const T& val);
+	virtual bool Search(const T& val);
 	//得到BST中指定值的节点
 	TreeNode<T>* GetNode(const T& val);
 	//返回BST中最小值的节点
