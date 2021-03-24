@@ -21,14 +21,14 @@ public:
 	//构造函数(会自动调用父类的构造函数)
 	BST() {}
 	//析构函数
-	virtual ~BST() { ClearTree(this->root); }
+	~BST() { ClearTree(this->root); this->root = nullptr; this->NodeSize = 0; }
 
 	//插入节点的函数
-	virtual void Insert(const T& val);
+	void Insert(const T& val);
 	//删除节点的函数
-	virtual void Delete(const T& val);
+	void Delete(const T& val);
 	//判断BST中是否存在val
-	virtual bool Search(const T& val);
+	bool Search(const T& val);
 	//得到BST中指定值的节点
 	TreeNode<T>* GetNode(const T& val);
 	//返回BST中最小值的节点
@@ -36,7 +36,6 @@ public:
 	//返回BST中最大值的节点
 	TreeNode<T>* GetMaxNode();
 };
-#endif // !BSTtree.h
 
 
 //函数的实现,分离头文件和源文件需要BSTree.h和BSTree.cpp 使用时必须#include "BSTree.cpp"不然编译器找不到文件
@@ -294,3 +293,7 @@ TreeNode<T>* BST<T>::GetMaxNode()
 {
 	return FindMaxNode(this->root);
 }
+
+
+
+#endif // !BSTtree.h

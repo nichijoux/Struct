@@ -1,8 +1,6 @@
 ﻿#pragma once
 #ifndef _TREE_H
 #define _TREE_H
-using std::max;
-using std::swap;
 
 template<class T>
 struct TreeNode
@@ -56,9 +54,6 @@ public:
 	int getNodeSize()const { return NodeSize; }
 };
 
-#endif // Tree.h
-
-
 //函数实现
 
 //前序遍历的辅助函数
@@ -98,3 +93,6 @@ int Tree<T>::get_Height_Help(TreeNode<T>* root)const
 	if (root == nullptr) { return 0; }
 	return max(get_Height_Help(root->left), get_Height_Help(root->right)) + 1;
 }
+
+
+#endif // Tree.h
